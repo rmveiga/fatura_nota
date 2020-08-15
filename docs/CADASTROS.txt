@@ -1,0 +1,46 @@
+CADASTROS:
+
+- Entidade
+> id
+> dt_cadastro
+> nome
+> cpf-cnpj
+> observaçao
+> cliente
+> fornecedor
+
+- Endereços
+> id
+> id_entidade
+> id_tipo_endereço
+> cep
+> logradouro
+> numero
+> complemento
+> cidade
+> estado
+> uf
+> pais
+> observaçao
+
+- Tipo de Endereço
+> id
+> descricao
+
+- Telefones
+> id
+> id_entidade
+> id_tipo_telefone
+> cod_pais
+> ddd
+> numero
+> ramal
+
+- Tipo de Telefone
+> id
+> descricao
+
+- Vendedor
+> id
+> nome
+> cpf
