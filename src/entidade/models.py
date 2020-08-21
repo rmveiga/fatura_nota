@@ -1,6 +1,6 @@
 from django.db import models
 
-from entidade.util import formata_numero_telefone
+from entidade.util import Formatos
 
 class Entidade(models.Model):
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='Data de Cadastro')
@@ -37,4 +37,32 @@ class Telefone(models.Model):
         db_table = 'telefone'
 
     def __str__(self):
-        return f'+{self.codigo_pais} ({self.ddd}) {formata_numero_telefone(self.numero)}'
+        return f'{Formatos.numero_telefone(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)}'
+
+class TipoEndereco(models.Model):
+    descricao = models.CharField(max_length=50, verbose_name='Descrição')
+
+    class Meta:
+        db_table = 'tipo_endereco'
+
+    def __str__(self):
+        return self.descricao
+
+class Endereco(models.Model):
+    entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
+    tipo_endereco = models.ForeignKey(TipoEndereco, on_delete=models.CASCADE, verbose_name='Tipo de Endereço')
+    cep = models.CharField(max_length=8, verbose_name='CEP')
+    logradouro = models.CharField(max_length=150, verbose_name='Logradouro')
+    numero = models.CharField(max_length=10, verbose_name='Número')
+    complemento = models.CharField(max_length=50, verbose_name='Complemento')
+    cidade = models.CharField(max_length=50, verbose_name='Cidade')
+    estado = models.CharField(max_length=50, verbose_name='Estado')
+    uf = models.CharField(max_length=2, verbose_name='UF')
+    pais = models.CharField(max_length=25, verbose_name='País')
+    observacao = models.TextField(verbose_name='Observação')
+
+    class Meta:
+        db_table = 'endereco'
+
+    def __str__(self):
+        return self.logradouro
