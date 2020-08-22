@@ -2,6 +2,7 @@ from django.db import models
 
 from entidade.util import Formatos
 
+
 class Entidade(models.Model):
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='Data de Cadastro')
     nome = models.CharField(max_length=150, verbose_name='Nome')
@@ -16,6 +17,7 @@ class Entidade(models.Model):
     def __str__(self):
         return self.nome
 
+
 class TipoTelefone(models.Model):
     descricao = models.CharField(max_length=50, verbose_name='Descrição')
 
@@ -24,6 +26,7 @@ class TipoTelefone(models.Model):
 
     def __str__(self):
         return self.descricao
+
 
 class Telefone(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
@@ -39,6 +42,7 @@ class Telefone(models.Model):
     def __str__(self):
         return f'{Formatos.numero_telefone(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)}'
 
+
 class TipoEndereco(models.Model):
     descricao = models.CharField(max_length=50, verbose_name='Descrição')
 
@@ -47,6 +51,7 @@ class TipoEndereco(models.Model):
 
     def __str__(self):
         return self.descricao
+
 
 class Endereco(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
