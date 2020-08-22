@@ -46,6 +46,7 @@ OTHER_APPS = [
 
 MY_APPS = [
     'entidade',
+    'estoque',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + OTHER_APPS + MY_APPS
