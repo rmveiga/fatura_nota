@@ -20,6 +20,5 @@ from entidade.urls import entidade_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api_entidades/', include(entidade_router.urls)),
-
+    path('api/cadastros/', include(entidade_router.urls)),
 ]
