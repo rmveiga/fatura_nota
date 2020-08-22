@@ -1,23 +1,16 @@
 from rest_framework import viewsets
 
-from entidade.api.serializers import (
-    EntidadeSerializer, TelefoneSerializer, EnderecoSerializer
+from estoque.api.serializers import (
+    ProdutoSerializer, MovimentoEstoqueSerializer
 )
-from entidade.models import (
-    Entidade, Telefone, Endereco
-)
+from estoque.models import Produto, MovimentoEstoque
 
 
-class EntidadeViewset(viewsets.ModelViewSet):
-    queryset = Entidade.objects.all()
-    serializer_class = EntidadeSerializer
+class ProdutoViewset(viewsets.ModelViewSet):
+    queryset = Produto.objects.all()
+    serializer_class = ProdutoSerializer
 
 
-class TelefoneViewset(viewsets.ModelViewSet):
-    queryset = Telefone.objects.all()
-    serializer_class = TelefoneSerializer
-
-
-class EnderecoViewset(viewsets.ModelViewSet):
-    queryset = Endereco.objects.all()
-    serializer_class = EnderecoSerializer
+class MovimentoEstoqueViewset(viewsets.ModelViewSet):
+    queryset = MovimentoEstoque.objects.all()
+    serializer_class = MovimentoEstoqueSerializer

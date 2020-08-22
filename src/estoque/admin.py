@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from estoque.models import MovimentoEstoque
+
+admin.site.register(MovimentoEstoque)

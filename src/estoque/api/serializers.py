@@ -1,28 +1,20 @@
 from rest_framework import serializers
 
-from entidade.models import Entidade, Telefone, Endereco
+from estoque.models import Produto, MovimentoEstoque
 
 
-class EntidadeSerializer(serializers.ModelSerializer):
+class ProdutoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Entidade
+        model = Produto
         fields = (
-            'id', 'data_cadastro', 'nome', 'cpf_cnpj', 'observacao', 'cliente', 'fornecedor'
+            'id', 'descricao', 'preco_venda', 'bloqueado', 'observacao'
         )
 
 
-class TelefoneSerializer(serializers.ModelSerializer):
+class MovimentoEstoqueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Telefone
+        model = MovimentoEstoque
         fields = (
-            'id', 'entidade', 'tipo_telefone', 'codigo_pais', 'ddd', 'numero', 'ramal'
-        )
-
-
-class EnderecoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Endereco
-        fields = (
-            'id', 'entidade', 'tipo_endereco', 'cep', 'logradouro', 'numero', 'complemento',
-            'cidade', 'estado', 'uf', 'pais', 'observacao'
+            'id', 'produto', 'data_movimento', 'tipo_movimento', 'quantidade',
+            'preco_venda', 'observacao'
         )

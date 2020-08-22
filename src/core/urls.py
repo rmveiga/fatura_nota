@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from entidade.urls import entidade_router
+from estoque.urls import estoque_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/cadastros/', include(entidade_router.urls)),
+    path('api/estoque/', include(estoque_router.urls)),
 ]
