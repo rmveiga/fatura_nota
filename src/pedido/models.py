@@ -6,8 +6,9 @@ STATUS_PEDIDO = [
     (3, 'Cancelado'),
 ]
 
+
 class Pedido(models.Model):
-    numero = models.CharField(max_length=6, verbose_name='Número')
+    numero = models.IntegerField(auto_created=True, verbose_name='Número')
     data_emissao = models.DateField(auto_now_add=True, verbose_name='Data de Emissão')
     status = models.IntegerField(
         choices=STATUS_PEDIDO, default=1, editable=False, verbose_name='Status de Emissão'
@@ -17,13 +18,14 @@ class Pedido(models.Model):
         db_table = 'pedido'
 
     def __str__(self):
-        return self.numero
+        return str(self.numero)
+
 
 class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, verbose_name='Pedido')
     quantidade = models.FloatField(verbose_name='Quantidade')
     valor_unitario = models.FloatField(verbose_name='Valor Unitário')
-    desconto_percentual = models.FloatField(verbose_name='Desconto %')
+    desconto_percentual = models.FloatField(null=True, blank=True, verbose_name='Desconto %')
 
     class Meta:
         db_table = 'item_pedido'
