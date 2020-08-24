@@ -46,6 +46,7 @@ OTHER_APPS = [
 
 MY_APPS = [
     'entidade',
+    'vendedor',
     'estoque',
 ]
 
