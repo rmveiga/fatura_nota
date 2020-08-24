@@ -19,16 +19,21 @@ from django.urls import path, include
 from rest_framework import routers
 
 from entidade.urls import entidade_router
-from estoque.urls import estoque_router
 from vendedor.urls import vendedor_router
+from estoque.urls import estoque_router
+from pedido_dependencies.urls import pedido_router
 
 cadastros_router = routers.DefaultRouter()
 cadastros_router.registry.extend(entidade_router.registry)
 cadastros_router.registry.extend(vendedor_router.registry)
+
+documentos_router = routers.DefaultRouter()
+documentos_router.registry.extend(pedido_router.registry)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/cadastros/', include(cadastros_router.urls)),
     path('api/estoque/', include(estoque_router.urls)),
+    path('api/documentos/', include(documentos_router.urls)),
 ]
