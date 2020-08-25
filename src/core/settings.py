@@ -50,6 +50,8 @@ MY_APPS = [
     'estoque',
     'pedido',
     'pedido_dependencies',
+    'notafiscal',
+    'notafiscal_dependencies',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + OTHER_APPS + MY_APPS
