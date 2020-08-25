@@ -11,7 +11,7 @@ class Pedido(models.Model):
     numero = models.IntegerField(auto_created=True, verbose_name='Número')
     data_emissao = models.DateField(auto_now_add=True, verbose_name='Data de Emissão')
     status = models.IntegerField(
-        choices=STATUS_PEDIDO, default=1, editable=False, verbose_name='Status de Emissão'
+        choices=STATUS_PEDIDO, default=1, editable=False, verbose_name='Status do Pedido'
     )
 
     class Meta:
