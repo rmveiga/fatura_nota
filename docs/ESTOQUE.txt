@@ -1,0 +1,16 @@
+ESTOQUE:
+
+- Produtos
+> id
+> descriçao
+> prç_venda
+> status
+> observaçao
+
+- Movimentos de Estoque
+> id
+> id_produto
+> dt_movimento
+> tipo_movimento
+> quantidade
+> observaçao

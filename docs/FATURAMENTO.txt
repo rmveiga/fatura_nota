@@ -1,0 +1,34 @@
+FATURAMENTO:
+
+- Pedidos
+> id
+> id_entidade
+> id_vendedor
+> numero
+> dt_emissao
+> status
+
+- Itens do Pedido
+> id
+> id_pedido
+> id_produto
+> quantidade
+> vlr_unitario
+> desconto%
+
+- Notas Fiscais
+> id
+> id_pedido
+> id_entidade
+> id_vendedor
+> numero
+> dt_emissao
+> status
+
+- Itens da Nota Fiscal
+> id
+> id_nota
+> id_produto
+> quantidade
+> vlr_unitario
+> desconto%
