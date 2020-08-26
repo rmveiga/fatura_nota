@@ -1,5 +1,10 @@
 from django.db import models
 
+TIPO_NOTAFISCAL = [
+    (1, 'Saída'),
+    (2, 'Entrada'),
+]
+
 STATUS_NOTAFISCAL = [
     (1, 'Cadastrada'),
     (2, 'Emitida'),
@@ -8,6 +13,9 @@ STATUS_NOTAFISCAL = [
 
 
 class NotaFiscal(models.Model):
+    tipo_notafiscal = models.IntegerField(
+        choices=TIPO_NOTAFISCAL, default=1, verbose_name='Tipo de Nota Fiscal'
+    )
     numero = models.IntegerField(verbose_name='Número')
     data_emissao = models.DateField(auto_now_add=True, verbose_name='Data de Emissão')
     status = models.IntegerField(

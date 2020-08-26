@@ -9,7 +9,7 @@ class PedidoDependenciesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PedidoDependencies
         fields = (
-            'id', 'entidade', 'vendedor', 'numero', 'data_emissao', 'status'
+            'id', 'entidade', 'vendedor', 'tipo_pedido', 'numero', 'data_emissao', 'status'
         )
 
 
