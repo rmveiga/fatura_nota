@@ -12,14 +12,6 @@ STATUS_PEDIDO = [
 ]
 
 
-# def numero_pedido():
-#     pedido = Pedido.objects.all().last()
-#     if not pedido:
-#         return 1
-#     ultimo_numero = pedido.numero
-#     return ultimo_numero + 1
-
-
 class Pedido(models.Model):
     tipo_pedido = models.IntegerField(
         choices=TIPO_PEDIDO, default=1, verbose_name='Tipo de Pedido'
