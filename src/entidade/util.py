@@ -1,4 +1,5 @@
 import re
+from rest_framework.exceptions import ValidationError
 
 CPFS_CONHECIDOS_INVALIDOS = [
     '00000000000',
@@ -14,7 +15,7 @@ CPFS_CONHECIDOS_INVALIDOS = [
 ]
 
 
-class Validacoes:
+class Validador:
 
     def _primeiro_digito_cpf_valido(self, cpf_sem_mascara):
         resultado = 0
@@ -117,8 +118,11 @@ class Validacoes:
         else:
             return False
 
+    def valida_cpf_cnpj_api(self, cpf_cnpj):
+        if not self.valida_cpf_cnpj(cpf_cnpj):
+            raise ValidationError(f'CPF/CNPJ Inválido: {cpf_cnpj}')
 
-class Formatos:
+class Formatador:
 
     @staticmethod
     def numero_telefone(numero, cod_pais=None, ddd=None):

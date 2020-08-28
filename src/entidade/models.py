@@ -1,12 +1,17 @@
 from django.db import models
 
-from entidade.util import Formatos
+from entidade.util import Formatador, Validador
+
+
+validador = Validador()
 
 
 class Entidade(models.Model):
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='Data de Cadastro')
     nome = models.CharField(max_length=150, verbose_name='Nome')
-    cpf_cnpj = models.CharField(max_length=14, verbose_name='CPF/CNPJ')
+    cpf_cnpj = models.CharField(
+        max_length=14, validators=[validador.valida_cpf_cnpj_api], verbose_name='CPF/CNPJ'
+    )
     observacao = models.TextField(null=True, blank=True, verbose_name='Observação')
     cliente = models.BooleanField(verbose_name='Cliente')
     fornecedor = models.BooleanField(verbose_name='Fornecedor')
@@ -30,7 +35,9 @@ class TipoTelefone(models.Model):
 
 class Telefone(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
-    tipo_telefone = models.ForeignKey(TipoTelefone, on_delete=models.CASCADE, verbose_name='Tipo de Telefone')
+    tipo_telefone = models.ForeignKey(
+        TipoTelefone, on_delete=models.CASCADE, verbose_name='Tipo de Telefone'
+    )
     codigo_pais = models.CharField(max_length=3, verbose_name='Código do País')
     ddd = models.CharField(max_length=2, verbose_name='DDD')
     numero = models.CharField(max_length=9, verbose_name='Número')
@@ -40,7 +47,7 @@ class Telefone(models.Model):
         db_table = 'telefone'
 
     def __str__(self):
-        return f'{Formatos.numero_telefone(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)}'
+        return f'{Formatador.numero_telefone(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)}'
 
 
 class TipoEndereco(models.Model):
@@ -55,7 +62,9 @@ class TipoEndereco(models.Model):
 
 class Endereco(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
-    tipo_endereco = models.ForeignKey(TipoEndereco, on_delete=models.CASCADE, verbose_name='Tipo de Endereço')
+    tipo_endereco = models.ForeignKey(
+        TipoEndereco, on_delete=models.CASCADE, verbose_name='Tipo de Endereço'
+    )
     cep = models.CharField(max_length=8, verbose_name='CEP')
     logradouro = models.CharField(max_length=150, verbose_name='Logradouro')
     numero = models.CharField(max_length=10, verbose_name='Número')
