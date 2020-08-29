@@ -1,18 +1,7 @@
 import re
 from rest_framework.exceptions import ValidationError
 
-CPFS_CONHECIDOS_INVALIDOS = [
-    '00000000000',
-    '11111111111',
-    '22222222222',
-    '33333333333',
-    '44444444444',
-    '55555555555',
-    '66666666666',
-    '77777777777',
-    '88888888888',
-    '99999999999',
-]
+from . import constantes
 
 
 class Validador:
@@ -90,34 +79,42 @@ class Validador:
     def remove_mascara_de_numero(self, numero):
         return re.sub('[^0-9]', '', numero)
 
-    def cpf_valido(self, cpf_sem_mascara):
-        if cpf_sem_mascara in CPFS_CONHECIDOS_INVALIDOS:
+    def valida_cpf(self, cpf_sem_mascara):
+        if cpf_sem_mascara in constantes.CPFS_CONHECIDOS_INVALIDOS:
             return False
         if not self._primeiro_digito_cpf_valido(cpf_sem_mascara):
             return False
         if not self._segundo_digito_cpf_valido(cpf_sem_mascara):
             return False
-
         return True
 
-    def cnpj_valido(self, cnpj_sem_mascara):
+    def valida_cnpj(self, cnpj_sem_mascara):
         if not self._primeiro_digito_cnpj_valido(cnpj_sem_mascara):
             return False
         if not self._segundo_digito_cnpj_valido(cnpj_sem_mascara):
             return False
-
         return True
 
     def valida_cpf_cnpj(self, cpf_cnpj):
         cpf_cnpj_temp = self.remove_mascara_de_numero(cpf_cnpj)
 
         if len(cpf_cnpj_temp) == 11:
-            return self.cpf_valido(cpf_cnpj_temp)
+            return self.valida_cpf(cpf_cnpj_temp)
         elif len(cpf_cnpj_temp) == 14:
-            return self.cnpj_valido(cpf_cnpj_temp)
+            return self.valida_cnpj(cpf_cnpj_temp)
         else:
             return False
 
     def valida_cpf_cnpj_api(self, cpf_cnpj):
         if not self.valida_cpf_cnpj(cpf_cnpj):
             raise ValidationError(f'CPF/CNPJ Inválido: {cpf_cnpj}')
+
+    def valida_ddd(self, ddd, codigo_pais):
+        if int(codigo_pais) == constantes.CODIGO_TELEFONICO_BRASIL:
+            if int(ddd) not in constantes.CODIGOS_AREA_BRASIL.keys():
+                return False
+            return True
+
+    def valida_ddd_api(self, ddd, codigo_pais):
+        if not self.valida_ddd(ddd, codigo_pais):
+            raise ValidationError(f'DDD Inválido: {ddd}')
