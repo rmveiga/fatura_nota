@@ -1,8 +1,8 @@
 from django.db import models
 
-from entidade.util import Formatador, Validador
+from utilitario import validadores, formatadores
 
-validador = Validador()
+validador = validadores.Validador()
 
 
 class Entidade(models.Model):
@@ -23,7 +23,7 @@ class Entidade(models.Model):
 
     @property
     def cpf_cnpj_formatado(self):
-        return Formatador.cpf_cnpj(self.cpf_cnpj)
+        return formatadores.cpf_cnpj(self.cpf_cnpj)
 
     @cpf_cnpj_formatado.setter
     def cpf_cnpj_formatado(self, value):
@@ -54,11 +54,11 @@ class Telefone(models.Model):
         db_table = 'telefone'
 
     def __str__(self):
-        return Formatador.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
+        return formatadores.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
 
     @property
     def numero_formatado(self):
-        return Formatador.numero_telefone(self.numero)
+        return formatadores.numero_telefone(self.numero)
 
     @numero_formatado.setter
     def numero_formatado(self, value):
@@ -98,7 +98,7 @@ class Endereco(models.Model):
 
     @property
     def cep_formatado(self):
-        return Formatador.cep(self.cep)
+        return formatadores.cep(self.cep)
 
     @cep_formatado.setter
     def cep_formatado(self, value):

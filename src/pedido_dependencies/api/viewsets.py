@@ -8,7 +8,7 @@ from pedido_dependencies.models import (
     PedidoDependencies, ItemPedidoDependencies
 )
 
-from pedido.util import Ferramentas
+from utilitario import documentos
 
 
 class PedidoDependenciesViewset(viewsets.ModelViewSet):
@@ -20,7 +20,7 @@ class PedidoDependenciesViewset(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         ultimo_pedido = PedidoDependencies.objects.all().last()
-        numero_pedido = Ferramentas.gera_numero_pedido(ultimo_pedido)
+        numero_pedido = documentos.gera_numero_pedido(ultimo_pedido)
         serializer.validated_data.update({'numero': numero_pedido})
 
         serializer.save()

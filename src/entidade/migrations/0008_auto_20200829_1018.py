@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import entidade.util
+import utilitario.validadores
 
 
 class Migration(migrations.Migration):
@@ -30,6 +30,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='entidade',
             name='cpf_cnpj',
-            field=models.CharField(max_length=14, validators=[entidade.util.Validador.valida_cpf_cnpj_api], verbose_name='CPF/CNPJ'),
+            field=models.CharField(max_length=14, validators=[utilitario.validadores.Validador.valida_cpf_cnpj_api], verbose_name='CPF/CNPJ'),
         ),
     ]

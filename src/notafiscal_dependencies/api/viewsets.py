@@ -8,7 +8,7 @@ from notafiscal_dependencies.models import (
     NotaFiscalDependencies, ItemNotaFiscalDependencies
 )
 
-from notafiscal.util import Ferramentas
+from utilitario import documentos
 
 
 class NotaFiscalDependenciesViewset(viewsets.ModelViewSet):
@@ -20,7 +20,7 @@ class NotaFiscalDependenciesViewset(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         ultima_notafiscal = NotaFiscalDependencies.objects.all().last()
-        numero_notafiscal = Ferramentas.gera_numero_notafiscal(ultima_notafiscal)
+        numero_notafiscal = documentos.gera_numero_notafiscal(ultima_notafiscal)
         serializer.validated_data.update({'numero': numero_notafiscal})
 
         serializer.save()
