@@ -14,6 +14,8 @@ class EntidadeSerializer(serializers.ModelSerializer):
 
 
 class TelefoneSerializer(serializers.ModelSerializer):
+    numero = serializers.CharField(source='numero_formatado')
+
     class Meta:
         model = Telefone
         fields = (

@@ -125,7 +125,16 @@ class Validador:
 class Formatador:
 
     @staticmethod
-    def numero_telefone(numero, cod_pais=None, ddd=None):
+    def numero_telefone(numero):
+        if len(numero) == 8:
+            return f'{numero[:4]}-{numero[4:]}'
+        elif len(numero) == 9:
+            return f'{numero[:5]}-{numero[5:]}'
+        else:
+            return numero
+
+    @staticmethod
+    def numero_telefone_completo(numero, cod_pais=None, ddd=None):
         resultado = ''
 
         if cod_pais:

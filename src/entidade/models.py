@@ -2,7 +2,6 @@ from django.db import models
 
 from entidade.util import Formatador, Validador
 
-
 validador = Validador()
 
 
@@ -16,21 +15,19 @@ class Entidade(models.Model):
     cliente = models.BooleanField(verbose_name='Cliente')
     fornecedor = models.BooleanField(verbose_name='Fornecedor')
 
-    @property
-    def cpf_cnpj_formatado(self):
-        return Formatador.cpf_cnpj(self.cpf_cnpj)
-
-    @cpf_cnpj_formatado.setter
-    def cpf_cnpj_formatado(self, value):
-        self.cpf_cnpj = value
-
     class Meta:
         db_table = 'entidade'
 
     def __str__(self):
         return self.nome
 
+    @property
+    def cpf_cnpj_formatado(self):
+        return Formatador.cpf_cnpj(self.cpf_cnpj)
 
+    @cpf_cnpj_formatado.setter
+    def cpf_cnpj_formatado(self, value):
+        self.cpf_cnpj = validador.remove_mascara_de_numero(value)
 
 
 class TipoTelefone(models.Model):
@@ -46,18 +43,26 @@ class TipoTelefone(models.Model):
 class Telefone(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
     tipo_telefone = models.ForeignKey(
-        TipoTelefone, on_delete=models.CASCADE, verbose_name='Tipo de Telefone'
+        TipoTelefone, null=True, blank=True, on_delete=models.CASCADE, verbose_name='Tipo de Telefone'
     )
     codigo_pais = models.CharField(max_length=3, verbose_name='Código do País')
     ddd = models.CharField(max_length=2, verbose_name='DDD')
     numero = models.CharField(max_length=9, verbose_name='Número')
-    ramal = models.CharField(max_length=5, verbose_name='Ramal')
+    ramal = models.CharField(max_length=5, blank=True, verbose_name='Ramal')
 
     class Meta:
         db_table = 'telefone'
 
     def __str__(self):
-        return f'{Formatador.numero_telefone(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)}'
+        return Formatador.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
+
+    @property
+    def numero_formatado(self):
+        return Formatador.numero_telefone(self.numero)
+
+    @numero_formatado.setter
+    def numero_formatado(self, value):
+        self.numero = validador.remove_mascara_de_numero(value)
 
 
 class TipoEndereco(models.Model):
