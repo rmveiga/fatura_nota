@@ -9,7 +9,8 @@ class NotaFiscalDependenciesSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotaFiscalDependencies
         fields = (
-            'id', 'pedido', 'entidade', 'vendedor', 'numero', 'data_emissao', 'status'
+            'id', 'pedido', 'entidade', 'vendedor', 'tipo_notafiscal', 'numero', 'data_emissao',
+            'status'
         )
 
 

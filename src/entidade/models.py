@@ -1,6 +1,8 @@
 from django.db import models
 
-from entidade.util import Formatos
+from utilitario import validadores, formatadores
+
+validador = validadores.Validador()
 
 
 class Entidade(models.Model):
@@ -17,6 +19,15 @@ class Entidade(models.Model):
     def __str__(self):
         return self.nome
 
+    @property
+    def cpf_cnpj_formatado(self):
+        return formatadores.cpf_cnpj(self.cpf_cnpj)
+
+    @cpf_cnpj_formatado.setter
+    def cpf_cnpj_formatado(self, value):
+        validador.valida_cpf_cnpj_api(value)
+        self.cpf_cnpj = validador.remove_mascara_de_numero(value)
+
 
 class TipoTelefone(models.Model):
     descricao = models.CharField(max_length=50, verbose_name='Descrição')
@@ -30,17 +41,27 @@ class TipoTelefone(models.Model):
 
 class Telefone(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
-    tipo_telefone = models.ForeignKey(TipoTelefone, on_delete=models.CASCADE, verbose_name='Tipo de Telefone')
+    tipo_telefone = models.ForeignKey(
+        TipoTelefone, null=True, blank=True, on_delete=models.CASCADE, verbose_name='Tipo de Telefone'
+    )
     codigo_pais = models.CharField(max_length=3, verbose_name='Código do País')
     ddd = models.CharField(max_length=2, verbose_name='DDD')
     numero = models.CharField(max_length=9, verbose_name='Número')
-    ramal = models.CharField(max_length=5, verbose_name='Ramal')
+    ramal = models.CharField(max_length=5, blank=True, verbose_name='Ramal')
 
     class Meta:
         db_table = 'telefone'
 
     def __str__(self):
-        return f'{Formatos.numero_telefone(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)}'
+        return formatadores.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
+
+    @property
+    def numero_formatado(self):
+        return formatadores.numero_telefone(self.numero)
+
+    @numero_formatado.setter
+    def numero_formatado(self, value):
+        self.numero = validador.remove_mascara_de_numero(value)
 
 
 class TipoEndereco(models.Model):
@@ -55,19 +76,29 @@ class TipoEndereco(models.Model):
 
 class Endereco(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
-    tipo_endereco = models.ForeignKey(TipoEndereco, on_delete=models.CASCADE, verbose_name='Tipo de Endereço')
+    tipo_endereco = models.ForeignKey(
+        TipoEndereco, null=True, blank=True, on_delete=models.CASCADE, verbose_name='Tipo de Endereço'
+    )
     cep = models.CharField(max_length=8, verbose_name='CEP')
     logradouro = models.CharField(max_length=150, verbose_name='Logradouro')
     numero = models.CharField(max_length=10, verbose_name='Número')
-    complemento = models.CharField(max_length=50, verbose_name='Complemento')
+    complemento = models.CharField(max_length=50, blank=True, verbose_name='Complemento')
     cidade = models.CharField(max_length=50, verbose_name='Cidade')
     estado = models.CharField(max_length=50, verbose_name='Estado')
     uf = models.CharField(max_length=2, verbose_name='UF')
     pais = models.CharField(max_length=25, verbose_name='País')
-    observacao = models.TextField(verbose_name='Observação')
+    observacao = models.TextField(blank=True, verbose_name='Observação')
 
     class Meta:
         db_table = 'endereco'
 
     def __str__(self):
         return self.logradouro
+
+    @property
+    def cep_formatado(self):
+        return formatadores.cep(self.cep)
+
+    @cep_formatado.setter
+    def cep_formatado(self, value):
+        self.cep = validador.remove_mascara_de_numero(value)
