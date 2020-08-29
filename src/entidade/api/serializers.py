@@ -24,6 +24,8 @@ class TelefoneSerializer(serializers.ModelSerializer):
 
 
 class EnderecoSerializer(serializers.ModelSerializer):
+    cep = serializers.CharField(source='cep_formatado')
+
     class Meta:
         model = Endereco
         fields = (

@@ -147,12 +147,11 @@ class Formatador:
             resultado += f'{numero[:5]}-{numero[5:]}'
         else:
             resultado += numero
-
         return resultado
 
     @staticmethod
     def cep(cep):
-        return f'{cep[:5] - cep[5:]}'
+        return f'{cep[:5]}-{cep[5:]}'
 
     @staticmethod
     def cpf_cnpj(cpf_cnpj):

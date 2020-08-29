@@ -78,20 +78,28 @@ class TipoEndereco(models.Model):
 class Endereco(models.Model):
     entidade = models.ForeignKey(Entidade, on_delete=models.CASCADE, verbose_name='Entidade')
     tipo_endereco = models.ForeignKey(
-        TipoEndereco, on_delete=models.CASCADE, verbose_name='Tipo de Endereço'
+        TipoEndereco, null=True, blank=True, on_delete=models.CASCADE, verbose_name='Tipo de Endereço'
     )
     cep = models.CharField(max_length=8, verbose_name='CEP')
     logradouro = models.CharField(max_length=150, verbose_name='Logradouro')
     numero = models.CharField(max_length=10, verbose_name='Número')
-    complemento = models.CharField(max_length=50, verbose_name='Complemento')
+    complemento = models.CharField(max_length=50, blank=True, verbose_name='Complemento')
     cidade = models.CharField(max_length=50, verbose_name='Cidade')
     estado = models.CharField(max_length=50, verbose_name='Estado')
     uf = models.CharField(max_length=2, verbose_name='UF')
     pais = models.CharField(max_length=25, verbose_name='País')
-    observacao = models.TextField(verbose_name='Observação')
+    observacao = models.TextField(blank=True, verbose_name='Observação')
 
     class Meta:
         db_table = 'endereco'
 
     def __str__(self):
         return self.logradouro
+
+    @property
+    def cep_formatado(self):
+        return Formatador.cep(self.cep)
+
+    @cep_formatado.setter
+    def cep_formatado(self, value):
+        self.cep = validador.remove_mascara_de_numero(value)
