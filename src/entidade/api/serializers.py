@@ -4,6 +4,8 @@ from entidade.models import Entidade, Telefone, Endereco
 
 
 class EntidadeSerializer(serializers.ModelSerializer):
+    cpf_cnpj = serializers.CharField(source='cpf_cnpj_formatado', label='CPF/CNPJ')
+
     class Meta:
         model = Entidade
         fields = (

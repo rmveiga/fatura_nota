@@ -16,11 +16,21 @@ class Entidade(models.Model):
     cliente = models.BooleanField(verbose_name='Cliente')
     fornecedor = models.BooleanField(verbose_name='Fornecedor')
 
+    @property
+    def cpf_cnpj_formatado(self):
+        return Formatador.cpf_cnpj(self.cpf_cnpj)
+
+    @cpf_cnpj_formatado.setter
+    def cpf_cnpj_formatado(self, value):
+        self.cpf_cnpj = value
+
     class Meta:
         db_table = 'entidade'
 
     def __str__(self):
         return self.nome
+
+
 
 
 class TipoTelefone(models.Model):
