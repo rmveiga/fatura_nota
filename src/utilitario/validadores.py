@@ -1,18 +1,7 @@
 import re
 from rest_framework.exceptions import ValidationError
 
-CPFS_CONHECIDOS_INVALIDOS = [
-    '00000000000',
-    '11111111111',
-    '22222222222',
-    '33333333333',
-    '44444444444',
-    '55555555555',
-    '66666666666',
-    '77777777777',
-    '88888888888',
-    '99999999999',
-]
+from . import constantes
 
 
 class Validador:
@@ -91,7 +80,7 @@ class Validador:
         return re.sub('[^0-9]', '', numero)
 
     def cpf_valido(self, cpf_sem_mascara):
-        if cpf_sem_mascara in CPFS_CONHECIDOS_INVALIDOS:
+        if cpf_sem_mascara in constantes.CPFS_CONHECIDOS_INVALIDOS:
             return False
         if not self._primeiro_digito_cpf_valido(cpf_sem_mascara):
             return False
