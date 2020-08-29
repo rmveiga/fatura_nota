@@ -33,7 +33,7 @@ class ItemPedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, verbose_name='Pedido')
     quantidade = models.FloatField(verbose_name='Quantidade')
     valor_unitario = models.FloatField(verbose_name='Valor Unitário')
-    desconto_percentual = models.FloatField(null=True, blank=True, verbose_name='Desconto %')
+    desconto_percentual = models.FloatField(blank=True, default=0, verbose_name='Desconto %')
 
     class Meta:
         db_table = 'item_pedido'
