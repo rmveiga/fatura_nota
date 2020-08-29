@@ -1,16 +1,14 @@
 from django.db import models
 
-from entidade.util import Formatador, Validador
+from utilitario import validadores, formatadores
 
-validador = Validador()
+validador = validadores.Validador()
 
 
 class Entidade(models.Model):
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='Data de Cadastro')
     nome = models.CharField(max_length=150, verbose_name='Nome')
-    cpf_cnpj = models.CharField(
-        max_length=14, validators=[validador.valida_cpf_cnpj_api], verbose_name='CPF/CNPJ'
-    )
+    cpf_cnpj = models.CharField(max_length=14, verbose_name='CPF/CNPJ')
     observacao = models.TextField(null=True, blank=True, verbose_name='Observação')
     cliente = models.BooleanField(verbose_name='Cliente')
     fornecedor = models.BooleanField(verbose_name='Fornecedor')
@@ -23,10 +21,11 @@ class Entidade(models.Model):
 
     @property
     def cpf_cnpj_formatado(self):
-        return Formatador.cpf_cnpj(self.cpf_cnpj)
+        return formatadores.cpf_cnpj(self.cpf_cnpj)
 
     @cpf_cnpj_formatado.setter
     def cpf_cnpj_formatado(self, value):
+        validador.valida_cpf_cnpj_api(value)
         self.cpf_cnpj = validador.remove_mascara_de_numero(value)
 
 
@@ -54,11 +53,11 @@ class Telefone(models.Model):
         db_table = 'telefone'
 
     def __str__(self):
-        return Formatador.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
+        return formatadores.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
 
     @property
     def numero_formatado(self):
-        return Formatador.numero_telefone(self.numero)
+        return formatadores.numero_telefone(self.numero)
 
     @numero_formatado.setter
     def numero_formatado(self, value):
@@ -98,7 +97,7 @@ class Endereco(models.Model):
 
     @property
     def cep_formatado(self):
-        return Formatador.cep(self.cep)
+        return formatadores.cep(self.cep)
 
     @cep_formatado.setter
     def cep_formatado(self, value):
