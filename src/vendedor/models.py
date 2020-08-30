@@ -20,5 +20,5 @@ class Vendedor(models.Model):
 
     @cpf_formatado.setter
     def cpf_formatado(self, value):
-        validador.valida_cpf_cnpj_api(value)
+        validador.valida_cpf_cnpj(value)
         self.cpf = validador.remove_mascara_de_numero(value)

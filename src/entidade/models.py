@@ -25,7 +25,7 @@ class Entidade(models.Model):
 
     @cpf_cnpj.setter
     def cpf_cnpj(self, value):
-        validador.valida_cpf_cnpj_api(value)
+        validador.valida_cpf_cnpj(value)
         self._cpf_cnpj = validador.remove_mascara_de_numero(value)
 
 
@@ -61,7 +61,7 @@ class Telefone(models.Model):
 
     @ddd.setter
     def ddd(self, value):
-        validador.valida_ddd_api(value, self.codigo_pais)
+        validador.valida_ddd(value, self.codigo_pais)
         self._ddd = value
 
     @property
@@ -70,7 +70,7 @@ class Telefone(models.Model):
 
     @numero.setter
     def numero(self, value):
-        validador.valida_tamanho_numero_telefone_api(value, self.codigo_pais)
+        validador.valida_tamanho_numero_telefone(value, self.codigo_pais)
         self._numero = validador.remove_mascara_de_numero(value)
 
 

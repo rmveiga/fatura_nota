@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='entidade',
             name='cpf_cnpj',
-            field=models.CharField(max_length=14, validators=[utilitario.validadores.Validador.valida_cpf_cnpj_api], verbose_name='CPF/CNPJ'),
+            field=models.CharField(max_length=14, validators=[utilitario.validadores.Validador.valida_cpf_cnpj], verbose_name='CPF/CNPJ'),
         ),
         migrations.AlterField(
             model_name='telefone',
