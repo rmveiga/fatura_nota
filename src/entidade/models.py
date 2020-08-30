@@ -70,6 +70,7 @@ class Telefone(models.Model):
 
     @numero.setter
     def numero(self, value):
+        validador.valida_tamanho_numero_telefone_api(value, self.codigo_pais)
         self._numero = validador.remove_mascara_de_numero(value)
 
 

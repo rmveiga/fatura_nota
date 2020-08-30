@@ -118,3 +118,14 @@ class Validador:
     def valida_ddd_api(self, ddd, codigo_pais):
         if not self.valida_ddd(ddd, codigo_pais):
             raise ValidationError(f'DDD Inválido: {ddd}')
+
+    def valida_tamanho_numero_telefone(self, numero, codigo_pais):
+        numero_temp = self.remove_mascara_de_numero(numero)
+        if int(codigo_pais) == constantes.CODIGO_TELEFONICO_BRASIL:
+            if len(numero_temp) < 8:
+                return False
+            return True
+
+    def valida_tamanho_numero_telefone_api(self, numero, codigo_pais):
+        if not self.valida_tamanho_numero_telefone(numero, codigo_pais):
+            raise ValidationError(f'Número de telefone inválido: {numero}')
