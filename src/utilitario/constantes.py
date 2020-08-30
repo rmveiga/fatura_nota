@@ -80,3 +80,19 @@ CODIGOS_AREA_BRASIL = {
     98: 'Maranhão',
     99: 'Maranhão',
 }
+
+MENSAGENS = {
+    'validação': {
+        'entidade': {
+            'cpf_cnpj': lambda n: f'CPF/CNPJ Inválido: {n}',
+        },
+        'telefone': {
+            'ddd': lambda n: f'DDD Inválido: {n}',
+            'telefone': lambda n: f'Número de telefone inválido: {n}',
+        },
+        'produto': {
+            'quantidade': lambda n: f'Quantidade inválida: {n}',
+            'preco_venda': lambda n: f'Preço de venda inválido: {n}',
+        }
+    }
+}

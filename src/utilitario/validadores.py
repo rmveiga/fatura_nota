@@ -5,6 +5,7 @@ from . import constantes
 
 
 class Validador:
+    mensagens_validacao = constantes.MENSAGENS.get('validação')
 
     def _primeiro_digito_cpf_valido(self, cpf_sem_mascara):
         resultado = 0
@@ -107,7 +108,8 @@ class Validador:
 
     def valida_cpf_cnpj(self, cpf_cnpj):
         if not self.verifica_cpf_cnpj(cpf_cnpj):
-            raise ValidationError(f'CPF/CNPJ Inválido: {cpf_cnpj}')
+            mensagem_cpf_cnpj = self.mensagens_validacao.get('entidade').get('cpf_cnpj')
+            raise ValidationError(mensagem_cpf_cnpj(cpf_cnpj))
 
     def verifica_ddd(self, ddd, codigo_pais):
         if int(codigo_pais) == constantes.CODIGO_TELEFONICO_BRASIL:
@@ -117,7 +119,8 @@ class Validador:
 
     def valida_ddd(self, ddd, codigo_pais):
         if not self.verifica_ddd(ddd, codigo_pais):
-            raise ValidationError(f'DDD Inválido: {ddd}')
+            mensagem_ddd = self.mensagens_validacao.get('telefone').get('ddd')
+            raise ValidationError(mensagem_ddd(ddd))
 
     def verifica_tamanho_numero_telefone(self, numero, codigo_pais):
         numero_temp = self.remove_mascara_de_numero(numero)
@@ -128,7 +131,8 @@ class Validador:
 
     def valida_tamanho_numero_telefone(self, numero, codigo_pais):
         if not self.verifica_tamanho_numero_telefone(numero, codigo_pais):
-            raise ValidationError(f'Número de telefone inválido: {numero}')
+            mensagem_numero_telefone = self.mensagens_validacao.get('telefone').get('numero')
+            raise ValidationError(mensagem_numero_telefone(numero))
 
     def verifica_se_numero_negativo(self, numero):
         if numero < 0:
@@ -137,8 +141,10 @@ class Validador:
 
     def valida_preco_venda_produto_api(self, preco_venda):
         if self.verifica_se_numero_negativo(preco_venda):
-            raise ValidationError(f'Preço de venda inválido: {preco_venda}')
+            mensagem_preco_venda = self.mensagens_validacao.get('produto').get('preco_venda')
+            raise ValidationError(mensagem_preco_venda(preco_venda))
 
     def valida_quantidade_produto_api(self, quantidade):
         if self.verifica_se_numero_negativo(quantidade):
-            raise ValidationError(f'Quantidade inválida: {quantidade}')
+            mensagem_quantidade = self.mensagens_validacao.get('produto').get('quantidade')
+            raise ValidationError(mensagem_quantidade(quantidade))
