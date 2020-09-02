@@ -1,4 +1,5 @@
 import re
+from random import randint
 from rest_framework.exceptions import ValidationError
 
 from . import constantes
@@ -8,32 +9,16 @@ class Validador:
     mensagens_validacao = constantes.MENSAGENS.get('validação')
 
     def _primeiro_digito_cpf_valido(self, cpf_sem_mascara):
-        resultado = 0
-        numeros = list(range(2, 11))
+        digito_gerado = self._gera_primeiro_digito_cpf(cpf_sem_mascara[:9])
         primeiro_digito = cpf_sem_mascara[-2]
-        for i in cpf_sem_mascara[:9]:
-            resultado += int(i) * numeros[-1]
-            numeros.pop()
 
-        resto = (resultado * 10) % 11
-        if resto == 10:
-            resto = 0
-
-        return str(resto) == primeiro_digito
+        return digito_gerado == primeiro_digito
 
     def _segundo_digito_cpf_valido(self, cpf_sem_mascara):
-        resultado = 0
-        numeros = list(range(2, 12))
+        digito_gerado = self._gera_segundo_digito_cpf(cpf_sem_mascara[:10])
         segundo_digito = cpf_sem_mascara[-1]
-        for i in cpf_sem_mascara[:10]:
-            resultado += int(i) * numeros[-1]
-            numeros.pop()
 
-        resto = (resultado * 10) % 11
-        if resto == 10:
-            resto = 0
-
-        return str(resto) == segundo_digito
+        return digito_gerado == segundo_digito
 
     def _primeiro_digito_cnpj_valido(self, cnpj_sem_mascara):
         resultado = 0
@@ -76,6 +61,44 @@ class Validador:
             resto = 11 - resto
 
         return str(resto) == segundo_digito
+
+    def _gera_corpo_cpf(self):
+        corpo_cpf = str()
+        for i in range(9):
+            corpo_cpf += str(randint(1, 9))
+        return corpo_cpf
+
+    def _gera_primeiro_digito_cpf(self, corpo_cpf):
+        resultado = 0
+        numeros = list(range(2, 11))
+        for i in corpo_cpf:
+            resultado += int(i) * numeros[-1]
+            numeros.pop()
+
+        resto = (resultado * 10) % 11
+        if resto == 10:
+            resto = 0
+
+        return str(resto)
+
+    def _gera_segundo_digito_cpf(self, corpo_cpf):
+        resultado = 0
+        numeros = list(range(2, 12))
+        for i in corpo_cpf:
+            resultado += int(i) * numeros[-1]
+            numeros.pop()
+
+        resto = (resultado * 10) % 11
+        if resto == 10:
+            resto = 0
+
+        return str(resto)
+
+    def gerador_cpf(self):
+        cpf = self._gera_corpo_cpf()
+        cpf += self._gera_primeiro_digito_cpf(cpf)
+        cpf += self._gera_segundo_digito_cpf(cpf)
+        return cpf
 
     def remove_mascara_de_numero(self, numero):
         return re.sub('[^0-9]', '', numero)

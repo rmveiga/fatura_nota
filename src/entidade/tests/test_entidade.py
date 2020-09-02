@@ -2,8 +2,10 @@ from django.test import TestCase, Client
 from rest_framework import status
 
 from ..models import Entidade
+from utilitario.validadores import Validador
 
 client = Client()
+validador = Validador()
 
 
 class EntidadeTest(TestCase):
@@ -20,6 +22,10 @@ class EntidadeTest(TestCase):
             'cliente': True,
             'fornecedor': False,
         }
+        # Entidade.objects.create(
+        #     nome='João',
+        #     cpf_cnpj=validador.gerador_cpf()
+        # )
 
     def test_cadastro_entidade_cpf_invalido(self):
         nome_entidade = self.entidade_cpf_invalido.get('nome')
