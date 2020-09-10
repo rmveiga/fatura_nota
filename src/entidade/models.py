@@ -8,7 +8,9 @@ validador = validadores.Validador()
 class Entidade(models.Model):
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='Data de Cadastro')
     nome = models.CharField(max_length=150, verbose_name='Nome')
-    _cpf_cnpj = models.CharField(max_length=14, verbose_name='CPF/CNPJ', name='cpf_cnpj')
+    cpf_cnpj = models.CharField(
+        max_length=14, validators=[validador.valida_cpf_cnpj], verbose_name='CPF/CNPJ', name='cpf_cnpj'
+    )
     observacao = models.TextField(null=True, blank=True, verbose_name='Observação')
     cliente = models.BooleanField(verbose_name='Cliente')
     fornecedor = models.BooleanField(verbose_name='Fornecedor')
@@ -18,15 +20,6 @@ class Entidade(models.Model):
 
     def __str__(self):
         return self.nome
-
-    @property
-    def cpf_cnpj(self):
-        return formatadores.cpf_cnpj(self._cpf_cnpj)
-
-    @cpf_cnpj.setter
-    def cpf_cnpj(self, value):
-        validador.valida_cpf_cnpj(value)
-        self._cpf_cnpj = validador.remove_mascara_de_numero(value)
 
 
 class TipoTelefone(models.Model):
