@@ -10,6 +10,10 @@ class EntidadeSerializer(serializers.ModelSerializer):
             'id', 'data_cadastro', 'nome', 'cpf_cnpj', 'observacao', 'cliente', 'fornecedor'
         )
 
+    def validate(self, data):
+        if not data['cliente'] and not data['fornecedor']:
+            raise serializers.ValidationError('A entidade precisa ser um cliente, fornecedor ou ambos')
+        return data
 
 class TelefoneSerializer(serializers.ModelSerializer):
     class Meta:
