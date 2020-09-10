@@ -74,6 +74,30 @@ class EntidadeTest(TestCase):
         self.assertEqual(response.data.get('cpf_cnpj')[0], f'CPF/CNPJ Inválido: {cpf_invalido}')
         self.assertEqual(entidade.cpf_cnpj, cpf_valido)
 
+    def test_edicao_entidade_cnpj_invalido(self):
+        response = client.post(
+            '/api/cadastros/entidades/',
+            self.entidade_cnpj_valido,
+            content_type='application/json'
+        )
+
+        id_entidade = response.data.get('id')
+        cnpj_valido = response.data.get('cpf_cnpj')
+        cnpj_invalido = self.entidade_cnpj_invalido.get('cpf_cnpj')
+        content = {'cpf_cnpj': cnpj_invalido}
+
+        response = client.patch(
+            f'/api/cadastros/entidades/{id_entidade}/',
+            content,
+            content_type='application/json'
+        )
+
+        entidade = Entidade.objects.get(pk=id_entidade)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data.get('cpf_cnpj')[0], f'CPF/CNPJ Inválido: {cnpj_invalido}')
+        self.assertEqual(entidade.cpf_cnpj, cnpj_valido)
+
 
     def test_cadastro_entidade_cnpj_invalido(self):
         nome_entidade = self.entidade_cnpj_invalido.get('nome')
