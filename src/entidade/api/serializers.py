@@ -22,6 +22,13 @@ class TelefoneSerializer(serializers.ModelSerializer):
             'id', 'entidade', 'tipo_telefone', 'codigo_pais', 'ddd', 'numero', 'ramal'
         )
 
+    def validate(self, data):
+        codigo_pais = data.get('codigo_pais')
+        numero_telefone = data.get('numero')
+        if codigo_pais == '55' and len(numero_telefone) < 8:
+            raise serializers.ValidationError(f'ERRO: Número de telefone inválido ({numero_telefone})')
+        return data
+
 
 class EnderecoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -15,6 +15,8 @@ class Entidade(models.Model):
     cliente = models.BooleanField(verbose_name='Cliente')
     fornecedor = models.BooleanField(verbose_name='Fornecedor')
 
+    objects = models.Manager
+
     class Meta:
         db_table = 'entidade'
 
@@ -38,8 +40,10 @@ class Telefone(models.Model):
         TipoTelefone, null=True, blank=True, on_delete=models.CASCADE, verbose_name='Tipo de Telefone'
     )
     codigo_pais = models.CharField(max_length=3, verbose_name='Código do País')
-    _ddd = models.CharField(max_length=2, verbose_name='DDD', name='ddd')
-    _numero = models.CharField(max_length=9, verbose_name='Número', name='numero')
+    ddd = models.CharField(
+        max_length=2, verbose_name='DDD', name='ddd'
+    )
+    numero = models.CharField(max_length=9, verbose_name='Número', name='numero')
     ramal = models.CharField(max_length=5, blank=True, verbose_name='Ramal')
 
     class Meta:
@@ -47,24 +51,6 @@ class Telefone(models.Model):
 
     def __str__(self):
         return formatadores.numero_telefone_completo(self.numero, cod_pais=self.codigo_pais, ddd=self.ddd)
-
-    @property
-    def ddd(self):
-        return self._ddd
-
-    @ddd.setter
-    def ddd(self, value):
-        validador.valida_ddd(value, self.codigo_pais)
-        self._ddd = value
-
-    @property
-    def numero(self):
-        return formatadores.numero_telefone(self._numero)
-
-    @numero.setter
-    def numero(self, value):
-        validador.valida_tamanho_numero_telefone(value, self.codigo_pais)
-        self._numero = validador.remove_mascara_de_numero(value)
 
 
 class TipoEndereco(models.Model):
