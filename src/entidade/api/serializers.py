@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from entidade.models import Entidade, Telefone, Endereco
+from utilitario.constantes import CODIGOS_AREA_BRASIL
 
 
 class EntidadeSerializer(serializers.ModelSerializer):
@@ -24,9 +25,13 @@ class TelefoneSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         codigo_pais = data.get('codigo_pais')
+        ddd_telefone = data.get('ddd')
         numero_telefone = data.get('numero')
+
         if codigo_pais == '55' and len(numero_telefone) < 8:
             raise serializers.ValidationError(f'ERRO: Número de telefone inválido ({numero_telefone})')
+        if codigo_pais == '55' and int(ddd_telefone) not in CODIGOS_AREA_BRASIL.keys():
+            raise serializers.ValidationError(f'ERRO: DDD inválido ({ddd_telefone})')
         return data
 
 
