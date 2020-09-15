@@ -2,7 +2,6 @@ from django.test import TestCase, Client
 from rest_framework import status
 
 from ..models import Entidade
-from utilitario import formatadores
 from utilitario.validadores import Validador
 
 client = Client()
