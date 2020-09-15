@@ -46,6 +46,8 @@ class Telefone(models.Model):
     numero = models.CharField(max_length=9, verbose_name='Número', name='numero')
     ramal = models.CharField(max_length=5, blank=True, verbose_name='Ramal')
 
+    objects = models.Manager
+
     class Meta:
         db_table = 'telefone'
 

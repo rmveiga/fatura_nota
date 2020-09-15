@@ -16,6 +16,13 @@ class TelefoneClass(TestCase):
             cliente=True,
             fornecedor=False,
         )
+        self.telefone = Telefone.objects.create(
+            entidade=self.entidade,
+            codigo_pais='55',
+            ddd='21',
+            numero='999999999',
+            ramal='',
+        )
 
         self.telefone_numero_invalido_brasil = {
             'entidade': 1,
@@ -33,3 +40,24 @@ class TelefoneClass(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_edicao_telefone_numero_invalido_brasil(self):
+        id_telefone = self.telefone.pk
+        id_entidade = self.telefone.entidade.pk
+        numero_telefone = self.telefone.numero
+        content = {
+            'entidade': id_entidade,
+            'codigo_pais': '55',
+            'ddd': '21',
+            'numero': '1234567',
+        }
+        response = client.patch(
+            f'/api/cadastros/telefones/{id_telefone}/',
+            content,
+            content_type='application/json'
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        telefone = Telefone.objects.get(pk=id_telefone)
+        self.assertEqual(telefone.numero, numero_telefone)
