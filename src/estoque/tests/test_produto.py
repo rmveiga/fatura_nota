@@ -15,6 +15,11 @@ class ProdutoTest(TestCase):
             descricao='Produto Válido',
             preco_venda=1,
         )
+        self.produto_bloqueado = Produto.objects.create(
+            descricao='Produto Bloqueado',
+            preco_venda=1,
+            bloqueado=True,
+        )
 
     def test_cadastro_produto_preco_venda_negativo(self):
         descricao_produto = self.preco_venda_negativo.get('descricao')
@@ -41,3 +46,23 @@ class ProdutoTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(produto.preco_venda, preco_venda_produto)
 
+    def test_edicao_produto_bloqueado(self):
+        id_produto = self.produto_bloqueado.pk
+        descricao_produto = self.produto_bloqueado.descricao
+        preco_venda_produto = self.produto_bloqueado.preco_venda
+        content = {
+            'descricao': 'Nova Descrição',
+            'preco_venda': 100,
+        }
+
+        response = client.patch(
+            f'/api/estoque/produtos/{id_produto}/',
+            content,
+            content_type='application/json',
+        )
+
+        produto = Produto.objects.get(pk=id_produto)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(produto.descricao, descricao_produto)
+        self.assertEqual(produto.preco_venda, preco_venda_produto)
+        self.assertTrue(produto.bloqueado)
