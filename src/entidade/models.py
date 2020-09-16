@@ -9,7 +9,7 @@ class Entidade(models.Model):
     data_cadastro = models.DateField(auto_now_add=True, verbose_name='Data de Cadastro')
     nome = models.CharField(max_length=150, verbose_name='Nome')
     cpf_cnpj = models.CharField(
-        max_length=14, validators=[validador.valida_cpf_cnpj], verbose_name='CPF/CNPJ', name='cpf_cnpj'
+        max_length=14, validators=[validador.valida_cpf_cnpj], verbose_name='CPF/CNPJ'
     )
     observacao = models.TextField(null=True, blank=True, verbose_name='Observação')
     cliente = models.BooleanField(verbose_name='Cliente')
