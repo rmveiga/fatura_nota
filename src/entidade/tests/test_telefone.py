@@ -3,13 +3,12 @@ from rest_framework import status
 
 from entidade.models import Telefone, Entidade
 from utilitario.validadores import Validador
-from utilitario.constantes import CODIGOS_AREA_BRASIL
-
 
 validador = Validador()
 client = Client()
 
-class TelefoneClass(TestCase):
+
+class TelefoneTest(TestCase):
     def setUp(self):
         self.entidade = Entidade.objects.create(
             nome='Teste Telefone',

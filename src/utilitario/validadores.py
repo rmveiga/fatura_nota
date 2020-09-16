@@ -180,7 +180,7 @@ class Validador:
             return True
         return False
 
-    def valida_preco_venda_produto_api(self, preco_venda):
+    def valida_preco_venda_produto(self, preco_venda):
         if self.verifica_se_numero_negativo(preco_venda):
             mensagem_preco_venda = self.mensagens_validacao.get('produto').get('preco_venda')
             raise ValidationError(mensagem_preco_venda(preco_venda))

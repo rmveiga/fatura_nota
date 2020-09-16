@@ -12,9 +12,13 @@ TIPO_MOVIMENTO_ESTOQUE = [
 
 class Produto(models.Model):
     descricao = models.CharField(max_length=150, verbose_name='Descrição')
-    preco_venda = models.FloatField(blank=True, verbose_name='Preço de Venda')
+    preco_venda = models.FloatField(
+        blank=True, validators=[validador.valida_preco_venda_produto] , verbose_name='Preço de Venda'
+    )
     bloqueado = models.BooleanField(default=False, editable=False, verbose_name='Bloqueado')
-    observacao = models.TextField(null=True, blank=True, verbose_name='Observação')
+    observacao = models.TextField(blank=True, verbose_name='Observação')
+
+    objects = models.Manager
 
     class Meta:
         db_table = 'produto'
@@ -30,6 +34,8 @@ class MovimentoEstoque(models.Model):
     quantidade = models.FloatField(verbose_name='Quantidade')
     preco_venda = models.FloatField(blank=True, verbose_name='Preço de Venda')
     observacao = models.TextField(blank=True, verbose_name='Observação')
+
+    objects = models.Manager
 
     class Meta:
         db_table = 'movimento_estoque'
