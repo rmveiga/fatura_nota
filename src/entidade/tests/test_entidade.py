@@ -51,7 +51,6 @@ class EntidadeTest(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('cpf_cnpj')[0], f'CPF/CNPJ Inválido: {cpf_entidade}')
         self.assertFalse(Entidade.objects.filter(nome=nome_entidade))
 
     def test_edicao_entidade_cpf_invalido(self):
@@ -75,7 +74,6 @@ class EntidadeTest(TestCase):
         entidade = Entidade.objects.get(pk=id_entidade)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('cpf_cnpj')[0], f'CPF/CNPJ Inválido: {cpf_invalido}')
         self.assertEqual(entidade.cpf_cnpj, cpf_valido)
 
     def test_cadastro_entidade_cnpj_invalido(self):
@@ -88,7 +86,6 @@ class EntidadeTest(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('cpf_cnpj')[0], f'CPF/CNPJ Inválido: {cnpj_entidade}')
         self.assertFalse(Entidade.objects.filter(nome=nome_entidade))
 
     def test_edicao_entidade_cnpj_invalido(self):
@@ -112,7 +109,6 @@ class EntidadeTest(TestCase):
         entidade = Entidade.objects.get(pk=id_entidade)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('cpf_cnpj')[0], f'CPF/CNPJ Inválido: {cnpj_invalido}')
         self.assertEqual(entidade.cpf_cnpj, cnpj_valido)
 
     def test_cadastro_entidade_nao_cliente_e_nao_fornecedor(self):
@@ -123,10 +119,7 @@ class EntidadeTest(TestCase):
             content_type='application/json'
         )
 
-        erro_esperado = 'A entidade precisa ser um cliente, fornecedor ou ambos'
-
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('non_field_errors')[0], erro_esperado)
         self.assertFalse(Entidade.objects.filter(nome=nome_entidade))
 
     def test_edicao_entidade_nao_cliente_e_nao_fornecedor(self):
@@ -148,9 +141,7 @@ class EntidadeTest(TestCase):
             content_type='application/json'
         )
 
-        erro_esperado = 'A entidade precisa ser um cliente, fornecedor ou ambos'
         entidade = Entidade.objects.get(pk=id_entidade)
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data.get('non_field_errors')[0], erro_esperado)
         self.assertTrue(entidade.cliente)
