@@ -66,3 +66,24 @@ class ProdutoTest(TestCase):
         self.assertEqual(produto.descricao, descricao_produto)
         self.assertEqual(produto.preco_venda, preco_venda_produto)
         self.assertTrue(produto.bloqueado)
+
+    def test_edicao_produto_nao_bloqueado(self):
+        id_produto = self.produto_valido.pk
+        nova_descricao = 'Nova Descrição'
+        novo_preco_venda = 100
+        content = {
+            'descricao': nova_descricao,
+            'preco_venda': novo_preco_venda,
+        }
+
+        response = client.patch(
+            f'/api/estoque/produtos/{id_produto}/',
+            content,
+            content_type='application/json',
+        )
+
+        produto = Produto.objects.get(pk=id_produto)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(produto.descricao, nova_descricao)
+        self.assertEqual(produto.preco_venda, novo_preco_venda)
+        self.assertFalse(produto.bloqueado)
